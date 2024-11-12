@@ -1,0 +1,40 @@
+<!-- monthly_report.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">TB Reports</h2>
+        <form method="GET" action="{% url 'monthly_report' %}">
+            {{ form.as_p }}
+            <button type="submit">Generate Report</button>
+        </form>
+    </div>
+
+    <div class="report">
+        {% if graph_data %}
+        <img src="data:image/png;base64,{{ graph_data }}" alt="Graph" />
+        
+        <form method="POST" action="{% url 'download_graphs_pdf'%}">
+            {% csrf_token %}
+            <input type="hidden" name="graph_data" value="{{ graph_data }}">
+            <button type="submit">Download Graph as PDF</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .container {
+        display: flex;
+    }
+    .sidebar {
+        width: 30%;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    .report {
+        width: 70%;
+        padding: 20px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Prediction Results</h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Image Section -->
+        <div class="rounded-lg overflow-hidden shadow-lg bg-gray-100">
+            {% if prediction.image %}
+                <img src="{{ prediction.image.url }}" 
+                     alt="X-ray Image" 
+                     class="w-full h-auto object-contain"
+                     style="max-height: 500px;">
+            {% else %}
+                <div class="p-4 text-center text-gray-500">
+                    No image available
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Information Section -->
+        <div class="space-y-6">
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold mb-4 text-gray-700">Patient Information</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                        <span class="text-gray-600 font-medium">Patient ID:</span>
+                        <span class="text-gray-800">{{ prediction.patient_id }}</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                        <span class="text-gray-600 font-medium">Patient Name:</span>
+                        <span class="text-gray-800">{{ prediction.patient_name }}</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                        <span class="text-gray-600 font-medium">Result:</span>
+                        {% if prediction.result %}
+                            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full font-semibold">Positive</span>
+                        {% else %}
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full font-semibold">Negative</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                        <span class="text-gray-600 font-medium">Confidence:</span>
+                        <span class="text-blue-600 font-semibold">{{ prediction.confidence|floatformat:2 }}</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                        <span class="text-gray-600 font-medium">Location:</span>
+                        <span class="text-gray-800">{{ prediction.location }}</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center pb-2">
+                        <span class="text-gray-600 font-medium">Date:</span>
+                        <span class="text-gray-800">{{ prediction.created_at|date:"F j, Y" }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="{% url 'download_pdf_report' prediction.id %}" 
+                   class="flex-1 bg-blue-600 text-white text-center py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold">
+                    Download PDF Report
+                </a>
+                <a href="{% url 'upload_image' %}" 
+                   class="flex-1 bg-gray-200 text-gray-700 text-center py-3 px-6 rounded-lg hover:bg-gray-300 transition duration-200 font-semibold">
+                    New Prediction
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Add this to ensure images are loaded properly
+document.addEventListener('DOMContentLoaded', function() {
+    const img = document.querySelector('img');
+    if (img) {
+        img.onerror = function() {
+            this.style.display = 'none';
+            this.parentElement.innerHTML = '<div class="p-4 text-center text-gray-500">Error loading image</div>';
+        };
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Statistics - SmartX{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Patient Statistics</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-gray-100 p-4 rounded">
+            <h3 class="text-xl font-semibold mb-2">Overall Statistics</h3>
+            <p>Total Predictions: {{ total_predictions }}</p>
+            <p>Positive Predictions: {{ positive_predictions }}</p>
+            <p>Negative Predictions: {{ negative_predictions }}</p>
+            <p>Average Confidence: {{ avg_confidence|floatformat:2 }}</p>
+        </div>
+        <div class="bg-gray-100 p-4 rounded">
+            <h3 class="text-xl font-semibold mb-2">Your Recent Predictions</h3>
+            <ul class="space-y-2">
+            {% for prediction in user_predictions %}
+                <li>
+                    <span class="font-semibold">{{ prediction.created_at|date:"M d, Y" }}:</span>
+                    {% if prediction.result %}
+                        <span class="text-red-600">Positive</span>
+                    {% else %}
+                        <span class="text-green-600">Negative</span>
+                    {% endif %}
+                    ({{ prediction.confidence|floatformat:2 }})
+                </li>
+            {% empty %}
+                <li>No predictions yet.</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
