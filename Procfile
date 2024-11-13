@@ -1,1 +1,1 @@
-web: gunicorn tb_detector_project.wsgi
+web: gunicorn tb_detector_project.wsgi:application

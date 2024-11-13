@@ -8,6 +8,8 @@ MODEL_FILE_PATH = os.path.join(BASE_DIR, 'models', 'tb_model2.keras')
 
 SECRET_KEY = 'secret2024!'
 DEBUG = False
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 ALLOWED_HOSTS = ['.onrender.com']
 
