@@ -7,8 +7,9 @@ MODEL_FILE_PATH = os.path.join(BASE_DIR, 'models', 'tb_model2.keras')
 
 
 SECRET_KEY = 'secret2024!'
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = False
+
+ALLOWED_HOSTS = ['.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
